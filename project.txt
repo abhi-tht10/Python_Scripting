@@ -1,13 +1,13 @@
 
 Project Assumptions:
-    -
-    - 
-    -
-    -
+    - All project code is located under C++_Projects folder
+    - All project directories follow the schema Project_(Project Number)
+    - Each folder has only 1 C++ file that needs to be compiled
+
 
 
 Project Steps:
-    -
-    -
-    -
-    -
+    - Find all project directories
+    - create a new /Projects directory
+    - create a .json file with all of the information about the projects
+    - compile and run all of the project code
