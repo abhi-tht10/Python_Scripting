@@ -3,5 +3,5 @@
 
 int main()
 {
-    std::cout << "Hello Project 3" << std::endl; 
+    std::cout << "Hello Project 3" << std::endl;
 }
