@@ -5,7 +5,8 @@ from subprocess import PIPE, run
 import sys
 
 PROJ_DIR_PATTERN = "project" # Pattern to identify project directories
-
+PROJ_CODE_EXTENSION = ".cpp"
+PROJ_COMPILE_CODE = ["g++", "-std=c++11"]
 
 def find_all_proj_paths(source):
     proj_paths = []
@@ -46,6 +47,32 @@ def json_metadata(path, projdirs):
     with open(path, 'w') as f:
         json.dump(data, f)
 
+def compile_code(path):
+    code_file_name = None
+
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            if file.endswith(PROJ_CODE_EXTENSION):
+                code_file_name = file
+                break
+        break
+
+    if code_file_name is None:
+        return
+    
+    command = PROJ_COMPILE_CODE + [code_file_name]
+
+    run_command(command, path)
+
+def run_command(command, path):
+    cwd = os.getcwd()
+    os.chdir(path)
+
+    result = run(command, stdout=PIPE, stdin=PIPE, universal_newlines=True)
+    print("compile reuslt: ", result)
+
+    os.chdir(cwd)
+
 def main(source, target):
     cwd = os.getcwd()
     source_path = os.path.join(cwd, source) #Adds path to the source directory relative to the current working directory
@@ -59,6 +86,7 @@ def main(source, target):
     for src, dest in zip(proj_paths, new_proj_paths):
         dest_path = os.path.join(target_path, dest)
         copy_and_overwrite(src, dest_path)
+        compile_code(dest_path)
     
     json_path = os.path.join(target_path, "metadata.json")
     json_metadata(json_path, new_proj_paths)
