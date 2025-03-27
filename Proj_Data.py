@@ -37,6 +37,15 @@ def copy_and_overwrite(source, destination):
         shutil.rmtree(destination)
     shutil.copytree(source,destination)
 
+def json_metadata(path, projdirs):
+    data = {
+        "projNames": projdirs,
+        "NumberOfProjects": len(projdirs),
+    }
+
+    with open(path, 'w') as f:
+        json.dump(data, f)
+
 def main(source, target):
     cwd = os.getcwd()
     source_path = os.path.join(cwd, source) #Adds path to the source directory relative to the current working directory
@@ -50,6 +59,10 @@ def main(source, target):
     for src, dest in zip(proj_paths, new_proj_paths):
         dest_path = os.path.join(target_path, dest)
         copy_and_overwrite(src, dest_path)
+    
+    json_path = os.path.join(target_path, "metadata.json")
+    json_metadata(json_path, new_proj_paths)
+    
 
 
 if __name__ == "__main__":
