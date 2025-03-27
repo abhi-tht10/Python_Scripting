@@ -62,7 +62,7 @@ def main(source, target):
     
     json_path = os.path.join(target_path, "metadata.json")
     json_metadata(json_path, new_proj_paths)
-    
+    fdsa
 
 
 if __name__ == "__main__":
